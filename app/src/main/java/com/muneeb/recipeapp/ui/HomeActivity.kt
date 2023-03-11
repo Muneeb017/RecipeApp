@@ -8,18 +8,22 @@ import android.view.View.inflate
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.codingwithme.recipeapp.database.RecipeDatabase
 import com.muneeb.recipeapp.adapter.MainCategoryAdapter
 import com.muneeb.recipeapp.adapter.SubCategoryAdapter
 import com.muneeb.recipeapp.databinding.ActivityHomeBinding
 import com.muneeb.recipeapp.databinding.ItemRvSubCategoryBinding
+import com.muneeb.recipeapp.entities.CategoryEntities
 import com.muneeb.recipeapp.entities.Recipes
+import com.muneeb.recipeapp.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.coroutines.launch
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
 
     lateinit var binding: ActivityHomeBinding
 
-    var arrMainCategory = ArrayList<Recipes>()
+    var arrMainCategory = ArrayList<CategoryEntities>()
     var arrSubCategory = ArrayList<Recipes>()
 
     lateinit var mainCategoryAdapter: MainCategoryAdapter
@@ -28,20 +32,11 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        getDataFromDb()
+
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.rvMainCategory.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val arrMainCategory = arrayListOf<Recipes>()
-
-        arrMainCategory.add(Recipes(1, "Beef"))
-        arrMainCategory.add(Recipes(2, "Chicken"))
-        arrMainCategory.add(Recipes(3, "Dessert"))
-        arrMainCategory.add(Recipes(4, "Lamb"))
-
-        val mainCategoryAdapter = MainCategoryAdapter(arrMainCategory)
-        binding.rvMainCategory.adapter = mainCategoryAdapter
 
         binding.rvSubCategory.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -56,4 +51,19 @@ class HomeActivity : AppCompatActivity() {
         binding.rvSubCategory.adapter = subCategoryAdapter
 
     }
+
+    private fun getDataFromDb() {
+        launch {
+            this.let {
+                val cat = RecipeDatabase.getDatabase(this@HomeActivity).recipeDao().getAllCategory()
+                arrMainCategory = cat as ArrayList<CategoryEntities>
+                arrMainCategory.reverse()
+                mainCategoryAdapter.setData(arrMainCategory)
+                rvMainCategory.layoutManager =
+                    LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
+                rvMainCategory.adapter = mainCategoryAdapter
+            }
+        }
+    }
+
 }
