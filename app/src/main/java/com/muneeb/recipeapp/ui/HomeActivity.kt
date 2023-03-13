@@ -1,21 +1,13 @@
-package com.muneeb.recipeapp
+package com.muneeb.recipeapp.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.View.inflate
-import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.codingwithme.recipeapp.database.RecipeDatabase
 import com.muneeb.recipeapp.adapter.MainCategoryAdapter
 import com.muneeb.recipeapp.adapter.SubCategoryAdapter
+import com.muneeb.recipeapp.database.RecipeDatabase
 import com.muneeb.recipeapp.databinding.ActivityHomeBinding
-import com.muneeb.recipeapp.databinding.ItemRvSubCategoryBinding
-import com.muneeb.recipeapp.entities.CategoryEntities
+import com.muneeb.recipeapp.entities.CategoryItems
 import com.muneeb.recipeapp.entities.Recipes
-import com.muneeb.recipeapp.ui.BaseActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.coroutines.launch
 
@@ -23,7 +15,7 @@ class HomeActivity : BaseActivity() {
 
     lateinit var binding: ActivityHomeBinding
 
-    var arrMainCategory = ArrayList<CategoryEntities>()
+    var arrMainCategory = ArrayList<CategoryItems>()
     var arrSubCategory = ArrayList<Recipes>()
 
     lateinit var mainCategoryAdapter: MainCategoryAdapter
@@ -56,7 +48,7 @@ class HomeActivity : BaseActivity() {
         launch {
             this.let {
                 val cat = RecipeDatabase.getDatabase(this@HomeActivity).recipeDao().getAllCategory()
-                arrMainCategory = cat as ArrayList<CategoryEntities>
+                arrMainCategory = cat as ArrayList<CategoryItems>
                 arrMainCategory.reverse()
                 mainCategoryAdapter.setData(arrMainCategory)
                 rvMainCategory.layoutManager =

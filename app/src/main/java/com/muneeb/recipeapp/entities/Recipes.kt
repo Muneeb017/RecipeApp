@@ -9,7 +9,7 @@ import java.io.Serializable
 data class Recipes(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
+
     @ColumnInfo(name = "dishName")
     var dishName: String
-
 ) : Serializable

@@ -1,24 +1,22 @@
 package com.muneeb.recipeapp.entities
 
-import android.os.Parcelable
+import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.TypeConverter
+import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 import com.muneeb.recipeapp.entities.converter.CategoryListConverter
-import kotlinx.android.parcel.Parcelize
 
-@Parcelize
 @Entity(tableName = "Category")
-@TypeConverters(CategoryListConverter::class)
 data class Category(
-    val categories: List<CategoryEntities>? = null
-) : Parcelable
+    @PrimaryKey(autoGenerate = true)
+    var id: Int,
 
-@Parcelize
-@Entity(tableName = "CategoryEntities")
-data class CategoryEntities(
-    val idCategory: String,
-    val strCategory: String,
-    val strCategoryDescription: String,
-    val strCategoryThumb: String
-) : Parcelable
+    @ColumnInfo(name = "categoryItems")
+    @Expose
+    @SerializedName("categories")
+    @TypeConverters(CategoryListConverter::class)
+    var categoryItems: List<CategoryItems>? = null
+)
+

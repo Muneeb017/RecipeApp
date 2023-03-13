@@ -1,22 +1,18 @@
-package com.codingwithme.recipeapp.database
+package com.muneeb.recipeapp.database
 
 import android.content.Context
-import android.icu.util.ULocale
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.muneeb.recipeapp.dao.RecipeDao
 import com.muneeb.recipeapp.entities.Category
-import com.muneeb.recipeapp.entities.CategoryEntities
+import com.muneeb.recipeapp.entities.CategoryItems
 import com.muneeb.recipeapp.entities.Recipes
 import com.muneeb.recipeapp.entities.converter.CategoryListConverter
-import java.util.*
 
-@Database(
-    entities = [Recipes::class, Category::class, CategoryEntities::class, CategoryListConverter::class],
-    version = 1,
-    exportSchema = false
-)
+@Database(entities = [Recipes::class, CategoryItems::class, Category::class], version = 1, exportSchema = false)
+@TypeConverters(CategoryListConverter::class)
 abstract class RecipeDatabase : RoomDatabase() {
 
     companion object {
@@ -25,7 +21,7 @@ abstract class RecipeDatabase : RoomDatabase() {
 
         @Synchronized
         fun getDatabase(context: Context): RecipeDatabase {
-            if (recipesDatabase == null) {
+            if (recipesDatabase != null) {
                 recipesDatabase = Room.databaseBuilder(
                     context,
                     RecipeDatabase::class.java,

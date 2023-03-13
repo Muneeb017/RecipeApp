@@ -5,18 +5,17 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.muneeb.recipeapp.entities.Category
-import com.muneeb.recipeapp.entities.CategoryEntities
-import com.muneeb.recipeapp.entities.Recipes
+import com.muneeb.recipeapp.entities.CategoryItems
 
 @Dao
 interface RecipeDao {
 
-    @Query("SELECT * FROM categoryentities ORDER BY id DESC")
-    suspend fun getAllCategory(): List<CategoryEntities>
+    @Query("SELECT * FROM categoryItems ORDER BY id DESC")
+    suspend fun getAllCategory(): List<CategoryItems>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCategory(category: CategoryEntities?)
+    suspend fun insertCategory(categoryItems: CategoryItems)
 
-    @Query("DELETE FROM categoryentities")
+    @Query("DELETE FROM categoryItems")
     suspend fun clearDb()
 }
